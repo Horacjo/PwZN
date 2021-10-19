@@ -1,9 +1,12 @@
 import argparse
 import os
 import nltk
+from random import randint
 from collections import defaultdict
 from yaml import parse
 from ascii_graph import Pyasciigraph
+from ascii_graph.colors import *
+from ascii_graph.colordata import vcolor
 
 parser = argparse.ArgumentParser(description="Opis:")
 parser.add_argument('file', help = "Użytkowniku podaj nazwę pliku do oczytania")
@@ -17,29 +20,28 @@ print(f'Min of histogram: {args.histogram}')
 
 with open(os.path.join(r'C:\Users\Widokowa\Desktop\PwZN_1',f'{args.file}'), encoding='utf8') as f:
     
-    dict = defaultdict(int)
+    dict1 = defaultdict(int)
+    dict2 = defaultdict(int)
     
     words = f.read()
     world_list = nltk.tokenize.word_tokenize(words)
 
     for i in world_list:
         if i.isalpha():
-            dict[i] +=1
+            dict1[i] +=1
    
-    #Tworzenie danych i sortowanie ich
-    graph = Pyasciigraph(
-        line_length=120,
-        min_graph_length=args.number,
-        separator_length=4,
-        graphsymbol='*',
-        float_format='{0:,.2f}',
-        force_max_value=2000,
-    )
+    for i in dict1:
+        if len(i) >= args.histogram:
+            dict2[i] = dict1[i]
 
-    data = [(f'{i}', dict[i]) for i in dict]
+    #Tworzenie danych i sortowanie ich
+    graph = Pyasciigraph()
+
+    pattern = [Yel, Cya, Pur]
+    data = vcolor([(f'{i}', dict2[i]) for i in dict2], pattern)
     data.sort(key=lambda e:e[1], reverse=True)
 
     #Rysowanie histogramu
-    for line in graph.graph(f'Histogram {args.file = }', data):
+    for line in graph.graph(f'Histogram {args.file = }', data[:int(args.number)]):
         print(line) 
     
