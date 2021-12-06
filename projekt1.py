@@ -18,7 +18,7 @@ print(f'File name: {args.file}')
 print(f'Number of worlds: {args.number}')
 print(f'Min of histogram: {args.histogram}')
 
-with open(os.path.join(r'C:\Users\Widokowa\Desktop\PwZN_1',f'{args.file}'), encoding='utf8') as f:
+with open(f'{args.file}', encoding='utf8') as f:
     
     dict1 = defaultdict(int)
     dict2 = defaultdict(int)
